@@ -2,34 +2,24 @@ package toy.project.minimember.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import toy.project.minimember.dto.AjaxResult;
-import toy.project.minimember.dto.UserReqDTO;
-import toy.project.minimember.dto.UserResDTO;
-import toy.project.minimember.service.UserService;
+import toy.project.minimember.dto.*;
+import toy.project.minimember.service.SellerService;
 
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping("/user")
+@RequestMapping("/seller")
 @RequiredArgsConstructor
 @RestController
-public class UserController {
+public class SellerController {
 
-    private final UserService userService;
-
-    // Model, DTO, VO
-    // SI - 빨리끝내야되니까
-//    @ResponseBody
-//    @GetMapping("/")
-//    public List<UserGetResDTO> getUsers() {
-//        return userService.getUsers();
-//    }
+    private final SellerService sellerService;
 
     @PostMapping("/create")
-    public AjaxResult insertUser(@Valid @RequestBody UserReqDTO userReqDTO) {
-        int result = userService.insertUser(userReqDTO);
+    public AjaxResult insertSeller(@Valid @RequestBody SellerReqDTO sellerReqDTO) {
+        int result = sellerService.insertSeller(sellerReqDTO);
         Map<String, Object> data = new HashMap<>();
         data.put("result", result);
         AjaxResult ajaxResult;
@@ -42,17 +32,17 @@ public class UserController {
     }
 
     @GetMapping("/list")
-    public AjaxResult selectUsers(UserReqDTO userReqDTO) {
-        List<UserResDTO> result = userService.selectUsers(userReqDTO);
+    public AjaxResult selectSellers(SellerReqDTO sellerReqDTO) {
+        List<SellerResDTO> result = sellerService.selectSellers(sellerReqDTO);
         Map<String, Object> data = new HashMap<>();
         data.put("result", result);
         return AjaxResult.builder().data(data).code(200).isSuccess(true).build();
     }
 
-    @GetMapping("/{userId}")
-    public AjaxResult selectUser(@PathVariable("userId") String userId, UserReqDTO userReqDTO) {
-        userReqDTO.setUserId(userId);
-        UserResDTO result = userService.selectUser(userReqDTO);
+    @GetMapping("/{sellerId}")
+    public AjaxResult selectSeller(@PathVariable("sellerId") String sellerId, SellerReqDTO sellerReqDTO) {
+        sellerReqDTO.setSellerId(sellerId);
+        SellerResDTO result = sellerService.selectSeller(sellerReqDTO);
         Map<String, Object> data = new HashMap<>();
         data.put("result", result);
         AjaxResult ajaxResult;
@@ -64,10 +54,10 @@ public class UserController {
         return ajaxResult;
     }
 
-    @PutMapping("/{userId}")
-    public AjaxResult updateUser(@PathVariable("userId") String userId, @RequestBody UserReqDTO userReqDTO) {
-        userReqDTO.setUserId(userId);
-        int result = userService.updateUser(userReqDTO);
+    @PutMapping("/{sellerId}")
+    public AjaxResult updateSeller(@PathVariable("sellerId") String sellerId, @RequestBody SellerReqDTO sellerReqDTO) {
+        sellerReqDTO.setSellerId(sellerId);
+        int result = sellerService.updateSeller(sellerReqDTO);
         Map<String, Object> data = new HashMap<>();
         data.put("result", result);
         AjaxResult ajaxResult;
@@ -79,10 +69,10 @@ public class UserController {
         return ajaxResult;
     }
 
-    @DeleteMapping("/{userId}")
-    public AjaxResult deleteUser(@PathVariable("userId") String userId, UserReqDTO userReqDTO) {
-        userReqDTO.setUserId(userId);
-        int result = userService.deleteUser(userReqDTO);
+    @DeleteMapping("/{sellerId}")
+    public AjaxResult deleteSeller(@PathVariable("sellerId") String sellerId, SellerReqDTO sellerReqDTO) {
+        sellerReqDTO.setSellerId(sellerId);
+        int result = sellerService.deleteSeller(sellerReqDTO);
         Map<String, Object> data = new HashMap<>();
         data.put("result", result);
         AjaxResult ajaxResult;

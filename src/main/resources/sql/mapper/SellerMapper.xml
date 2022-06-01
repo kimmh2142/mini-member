@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SellerMapper">
+
+    <insert id="insertSeller" parameterType="SellerModel">
+        INSERT
+            INTO SELLER
+            (
+                SELLER_ID,
+                SELLER_PASSWORD,
+                SELLER_NAME,
+                SELLER_REPRESENTATIVE,
+                SELLER_PHONE,
+                SELLER_EMAIL,
+                SELLER_ADDRESS,
+                REPRESENTATIVE_PHONE,
+                COMPANY_REGISTRATION_NUMBER,
+                PRODUCE_DATE,
+                PRODUCE_ID,
+                MODIFY_DATE,
+                MODIFY_ID
+            )
+            VALUES
+            (
+                #{sellerId},
+                #{sellerPassword},
+                #{sellerName},
+                #{sellerRepresentative},
+                #{sellerPhone},
+                #{sellerEmail},
+                #{sellerAddress},
+                #{representativePhone},
+                #{companyRegistrationNumber},
+                NOW(),
+                #{produceId},
+                NOW(),
+                #{modifyId}
+            )
+    </insert>
+
+    <select id="selectSellers" resultType="SellerModel" parameterType="SellerModel">
+        SELECT
+            SELLER_ID,
+            SELLER_PASSWORD,
+            SELLER_NAME,
+            SELLER_REPRESENTATIVE,
+            SELLER_PHONE,
+            SELLER_EMAIL,
+            SELLER_ADDRESS,
+            REPRESENTATIVE_PHONE,
+            COMPANY_REGISTRATION_NUMBER,
+            PRODUCE_DATE,
+            PRODUCE_ID,
+            MODIFY_DATE,
+            MODIFY_ID
+        FROM SELLER
+    </select>
+
+    <select id="selectSeller" resultType="SellerModel" parameterType="SellerModel">
+        SELECT
+            SELLER_ID,
+            SELLER_PASSWORD,
+            SELLER_NAME,
+            SELLER_REPRESENTATIVE,
+            SELLER_PHONE,
+            SELLER_EMAIL,
+            SELLER_ADDRESS,
+            REPRESENTATIVE_PHONE,
+            COMPANY_REGISTRATION_NUMBER,
+            PRODUCE_DATE,
+            PRODUCE_ID,
+            MODIFY_DATE,
+            MODIFY_ID
+        FROM SELLER
+            WHERE SELLER_ID = #{sellerId}
+    </select>
+
+    <delete id="deleteSeller" parameterType="SellerModel">
+        DELETE FROM SELLER WHERE SELLER_ID = #{sellerId}
+    </delete>
+
+    <update id="updateSeller" parameterType="SellerModel">
+        UPDATE SELLER SET
+            <if test='sellerPassword != null and sellerPassword != "" '>
+                SELLER_PASSWORD = #{sellerPassword},
+            </if>
+            <if test='sellerName != null and sellerName != "" '>
+                SELLER_NAME = #{sellerName},
+            </if>
+            <if test='sellerRepresentative != null and sellerRepresentative != "" '>
+                SELLER_REPRESENTATIVE = #{sellerRepresentative},
+            </if>
+            <if test='sellerPhone != null and sellerPhone != "" '>
+                SELLER_PHONE = #{sellerPhone},
+            </if>
+            <if test='sellerEmail != null and sellerEmail != "" '>
+                SELLER_EMAIL = #{sellerEmail},
+            </if>
+            <if test='sellerAddress != null and sellerAddress != "" '>
+                SELLER_ADDRESS = #{sellerAddress},
+            </if>
+            <if test='representativePhone != null and representativePhone != "" '>
+                REPRESENTATIVE_PHONE = #{representativePhone},
+            </if>
+            <if test='companyRegistrationNumber != null and companyRegistrationNumber != "" '>
+                COMPANY_REGISTRATION_NUMBER = #{companyRegistrationNumber},
+            </if>
+
+            <if test='modifyId != null and modifyId != "" '>
+                MODIFY_ID = #{modifyId},
+            </if>
+                MODIFY_DATE = NOW()
+            WHERE SELLER_ID = #{sellerId}
+    </update>
+</mapper>

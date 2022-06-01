@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ShipAddrMapper">
+
+    <insert id="insertShipAddr" parameterType="ShipAddrModel">
+        INSERT
+            INTO SHIPPING_ADDRESS
+            (
+                USER_ID,
+                ADDRESS_NICKNAME,
+                ZIP_CODE,
+                ADDRESS,
+                ADDRESS_DETAIL,
+                PRODUCE_DATE,
+                PRODUCE_ID,
+                MODIFY_DATE,
+                MODIFY_ID
+            )
+            VALUES
+            (
+                #{userId},
+                #{addressNickname},
+                #{zipCode},
+                #{address},
+                #{addressDetail},
+                NOW(),
+                #{produceId},
+                NOW(),
+                #{modifyId}
+            )
+    </insert>
+
+    <select id="selectShipAddrs" resultType="ShipAddrModel" parameterType="ShipAddrModel">
+        SELECT
+            SHIP_ADDRESS_NO,
+            USER_ID,
+            ADDRESS_NICKNAME,
+            ZIP_CODE,
+            ADDRESS,
+            ADDRESS_DETAIL,
+            PRODUCE_DATE,
+            PRODUCE_ID,
+            MODIFY_DATE,
+            MODIFY_ID
+        FROM SHIPPING_ADDRESS
+        WHERE USER_ID = #{userId}
+    </select>
+
+    <select id="selectShipAddr" resultType="ShipAddrModel" parameterType="ShipAddrModel">
+        SELECT * FROM (
+            SELECT
+            SHIP_ADDRESS_NO,
+            USER_ID,
+            ADDRESS_NICKNAME,
+            ZIP_CODE,
+            ADDRESS,
+            ADDRESS_DETAIL,
+            PRODUCE_DATE,
+            PRODUCE_ID,
+            MODIFY_DATE,
+            MODIFY_ID
+            FROM SHIPPING_ADDRESS
+            WHERE USER_ID = #{userId}
+            ) A
+        HAVING MIN(SHIP_ADDRESS_NO)
+    </select>
+
+    <delete id="deleteShipAddr" parameterType="ShipAddrModel">
+        DELETE FROM SHIPPING_ADDRESS WHERE SHIP_ADDRESS_NO = #{shipAddressNo}
+    </delete>
+
+    <update id="updateShipAddr" parameterType="ShipAddrModel">
+        UPDATE SHIPPING_ADDRESS SET
+            <if test='addressNickname != null and addressNickname != "" '>
+                ADDRESS_NICKNAME = #{addressNickname},
+            </if>
+            <if test='zipCode != null and zipCode != "" '>
+                ZIP_CODE = #{zipCode},
+            </if>
+            <if test='address != null and address != "" '>
+                ADDRESS = #{address},
+            </if>
+            <if test='addressDetail != null and addressDetail != "" '>
+                ADDRESS_DETAIL = #{addressDetail},
+            </if>
+            <if test='modifyId != null and modifyId != "" '>
+                MODIFY_ID = #{modifyId},
+            </if>
+                MODIFY_DATE = NOW()
+            WHERE SHIP_ADDRESS_NO = #{shipAddressNo}
+    </update>
+</mapper>

@@ -3,33 +3,25 @@ package toy.project.minimember.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import toy.project.minimember.dto.AjaxResult;
-import toy.project.minimember.dto.UserReqDTO;
-import toy.project.minimember.dto.UserResDTO;
-import toy.project.minimember.service.UserService;
+import toy.project.minimember.dto.ShipAddrReqDTO;
+import toy.project.minimember.dto.ShipAddrResDTO;
+import toy.project.minimember.service.ShipAddrService;
 
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping("/user")
+@RequestMapping("/shipping-address")
 @RequiredArgsConstructor
 @RestController
-public class UserController {
+public class ShipAddrController {
 
-    private final UserService userService;
-
-    // Model, DTO, VO
-    // SI - 빨리끝내야되니까
-//    @ResponseBody
-//    @GetMapping("/")
-//    public List<UserGetResDTO> getUsers() {
-//        return userService.getUsers();
-//    }
+    private final ShipAddrService shipAddrService;
 
     @PostMapping("/create")
-    public AjaxResult insertUser(@Valid @RequestBody UserReqDTO userReqDTO) {
-        int result = userService.insertUser(userReqDTO);
+    public AjaxResult insertShipAddr(@Valid @RequestBody ShipAddrReqDTO shipAddrReqDTO) {
+        int result = shipAddrService.insertShipAddr(shipAddrReqDTO);
         Map<String, Object> data = new HashMap<>();
         data.put("result", result);
         AjaxResult ajaxResult;
@@ -41,18 +33,21 @@ public class UserController {
         return ajaxResult;
     }
 
-    @GetMapping("/list")
-    public AjaxResult selectUsers(UserReqDTO userReqDTO) {
-        List<UserResDTO> result = userService.selectUsers(userReqDTO);
+    /**유저 배송지 목록*/
+    @GetMapping("/list/{userId}")
+    public AjaxResult selectShipAddrs(@PathVariable("userId") String userId, ShipAddrReqDTO shipAddrReqDTO) {
+        shipAddrReqDTO.setUserId(userId);
+        List<ShipAddrResDTO> result = shipAddrService.selectShipAddrs(shipAddrReqDTO);
         Map<String, Object> data = new HashMap<>();
         data.put("result", result);
         return AjaxResult.builder().data(data).code(200).isSuccess(true).build();
     }
 
+    /**유저 기본배송지*/
     @GetMapping("/{userId}")
-    public AjaxResult selectUser(@PathVariable("userId") String userId, UserReqDTO userReqDTO) {
-        userReqDTO.setUserId(userId);
-        UserResDTO result = userService.selectUser(userReqDTO);
+    public AjaxResult selectShipAddr(@PathVariable("userId") String userId, ShipAddrReqDTO shipAddrReqDTO) {
+        shipAddrReqDTO.setUserId(userId);
+        ShipAddrResDTO result = shipAddrService.selectShipAddr(shipAddrReqDTO);
         Map<String, Object> data = new HashMap<>();
         data.put("result", result);
         AjaxResult ajaxResult;
@@ -64,10 +59,10 @@ public class UserController {
         return ajaxResult;
     }
 
-    @PutMapping("/{userId}")
-    public AjaxResult updateUser(@PathVariable("userId") String userId, @RequestBody UserReqDTO userReqDTO) {
-        userReqDTO.setUserId(userId);
-        int result = userService.updateUser(userReqDTO);
+    @PutMapping("/{shipAddressNo}")
+    public AjaxResult updateShipAddr(@PathVariable("shipAddressNo") int shipAddressNo, @RequestBody ShipAddrReqDTO shipAddrReqDTO) {
+        shipAddrReqDTO.setShipAddressNo(shipAddressNo);
+        int result = shipAddrService.updateShipAddr(shipAddrReqDTO);
         Map<String, Object> data = new HashMap<>();
         data.put("result", result);
         AjaxResult ajaxResult;
@@ -79,10 +74,10 @@ public class UserController {
         return ajaxResult;
     }
 
-    @DeleteMapping("/{userId}")
-    public AjaxResult deleteUser(@PathVariable("userId") String userId, UserReqDTO userReqDTO) {
-        userReqDTO.setUserId(userId);
-        int result = userService.deleteUser(userReqDTO);
+    @DeleteMapping("/{shipAddressNo}")
+    public AjaxResult deleteShipAddr(@PathVariable("shipAddressNo") int shipAddressNo, ShipAddrReqDTO shipAddrReqDTO) {
+        shipAddrReqDTO.setShipAddressNo(shipAddressNo);
+        int result = shipAddrService.deleteShipAddr(shipAddrReqDTO);
         Map<String, Object> data = new HashMap<>();
         data.put("result", result);
         AjaxResult ajaxResult;

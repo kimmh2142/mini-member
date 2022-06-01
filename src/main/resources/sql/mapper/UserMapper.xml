@@ -5,7 +5,114 @@
 
 <mapper namespace="UserMapper">
 
-    <select id="getUsers" resultType="User">
-        SELECT name, phone FROM TB_USER
+    <insert id="insertUser" parameterType="UserModel">
+        INSERT
+            INTO USER
+            (
+                USER_ID,
+                USER_PASSWORD,
+                USER_NAME,
+                USER_PHONE,
+                USER_EMAIL,
+                USER_NICKNAME,
+                USER_PROFILE_IMG,
+                USER_EMAIL_RECEPTION_YN,
+                USER_MEMBERSHIP_YN,
+                PRODUCE_DATE,
+                PRODUCE_ID,
+                MODIFY_DATE,
+                MODIFY_ID
+            )
+            VALUES
+            (
+                #{userId},
+                #{userPassword},
+                #{userName},
+                #{userPhone},
+                #{userEmail},
+                #{userNickname},
+                #{userProfileImg},
+                #{userEmailReceptionYn},
+                #{userMembershipYn},
+                NOW(),
+                #{produceId},
+                NOW(),
+                #{modifyId}
+            )
+    </insert>
+
+    <select id="selectUsers" resultType="UserModel" parameterType="UserModel">
+        SELECT
+            USER_ID,
+            USER_PASSWORD,
+            USER_NAME,
+            USER_PHONE,
+            USER_EMAIL,
+            USER_NICKNAME,
+            USER_PROFILE_IMG,
+            USER_EMAIL_RECEPTION_YN,
+            USER_MEMBERSHIP_YN,
+            PRODUCE_DATE,
+            PRODUCE_ID,
+            MODIFY_DATE,
+            MODIFY_ID
+        FROM USER
     </select>
+
+    <select id="selectUser" resultType="UserModel" parameterType="UserModel">
+        SELECT
+            USER_ID,
+            USER_PASSWORD,
+            USER_NAME,
+            USER_PHONE,
+            USER_EMAIL,
+            USER_NICKNAME,
+            USER_PROFILE_IMG,
+            USER_EMAIL_RECEPTION_YN,
+            USER_MEMBERSHIP_YN,
+            PRODUCE_DATE,
+            PRODUCE_ID,
+            MODIFY_DATE,
+            MODIFY_ID
+        FROM USER
+            WHERE USER_ID = #{userId}
+    </select>
+
+    <delete id="deleteUser" parameterType="UserModel">
+        DELETE FROM USER WHERE USER_ID = #{userId}
+    </delete>
+
+    <update id="updateUser" parameterType="UserModel">
+        UPDATE USER SET
+            <if test='userPassword != null and userPassword != "" '>
+                USER_PASSWORD = #{userPassword},
+            </if>
+            <if test='userName != null and userName != "" '>
+                USER_NAME = #{userName},
+            </if>
+            <if test='userPhone != null and userPhone != "" '>
+                USER_PHONE = #{userPhone},
+            </if>
+            <if test='userEmail != null and userEmail != "" '>
+                USER_EMAIL = #{userEmail},
+            </if>
+            <if test='userNickname != null and userNickname != "" '>
+                USER_NICKNAME = #{userNickname},
+            </if>
+            <if test='userProfileImg != null and userProfileImg != "" '>
+                USER_PROFILE_IMG = #{userProfileImg},
+            </if>
+            <if test='userEmailReceptionYn != null and userEmailReceptionYn != "" '>
+                USER_EMAIL_RECEPTION_YN = #{userEmailReceptionYn},
+            </if>
+            <if test='userMembershipYn != null and userMembershipYn != "" '>
+                USER_MEMBERSHIP_YN = #{userMembershipYn},
+            </if>
+
+            <if test='modifyId != null and modifyId != "" '>
+                MODIFY_ID = #{modifyId},
+            </if>
+                MODIFY_DATE = NOW()
+            WHERE USER_ID = #{userId}
+    </update>
 </mapper>
